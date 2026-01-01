@@ -1,0 +1,4 @@
+com\codehill\carmanagement\cli\service\ApiClient.class
+com\codehill\carmanagement\cli\util\ConsoleFormatter.class
+com\codehill\carmanagement\cli\CarManagementCLI.class
+com\codehill\carmanagement\cli\command\CommandParser.class

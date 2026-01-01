@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <display-name>Car Management &amp; Fuel Tracking System</display-name>
+    <description>
+        Professional servlet-based backend for managing cars and tracking fuel consumption.
+        Demonstrates manual servlet lifecycle, HTTP request/response handling, and clean architecture.
+    </description>
+
+    <servlet>
+        <servlet-name>CarServlet</servlet-name>
+        <servlet-class>com.codehill.carmanagement.servlet.CarServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CarServlet</servlet-name>
+        <url-pattern>/api/cars</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>FuelServlet</servlet-name>
+        <servlet-class>com.codehill.carmanagement.servlet.FuelServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>FuelServlet</servlet-name>
+        <url-pattern>/fuel/*</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>FuelStatsQueryServlet</servlet-name>
+        <servlet-class>com.codehill.carmanagement.servlet.FuelStatsQueryServlet</servlet-class>
+        <load-on-startup>4</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>FuelStatsQueryServlet</servlet-name>
+        <url-pattern>/servlet/fuel-stats</url-pattern>
+    </servlet-mapping>
+
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/404.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error/500.html</location>
+    </error-page>
+
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+        </cookie-config>
+    </session-config>
+
+</web-app>

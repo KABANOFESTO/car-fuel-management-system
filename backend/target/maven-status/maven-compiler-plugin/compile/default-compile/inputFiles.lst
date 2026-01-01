@@ -1,0 +1,17 @@
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\dto\FuelStatisticsResponse.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\servlet\FuelStatsQueryServlet.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\exception\CarNotFoundException.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\repository\CarRepository.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\servlet\FuelStatsServlet.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\repository\FuelEntryRepository.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\exception\ValidationException.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\servlet\FuelServlet.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\service\CarService.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\servlet\CarServlet.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\util\JsonUtil.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\model\Car.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\model\FuelEntry.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\dto\FuelEntryRequest.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\util\ValidationUtil.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\service\FuelStatisticsService.java
+D:\Kab\codehill\codehill\car-management-system\backend\src\main\java\com\codehill\carmanagement\dto\CarRequest.java

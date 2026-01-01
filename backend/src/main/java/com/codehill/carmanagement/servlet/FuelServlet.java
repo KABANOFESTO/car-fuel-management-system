@@ -1,0 +1,198 @@
+package com.codehill.carmanagement.servlet;
+
+import com.codehill.carmanagement.dto.FuelEntryRequest;
+import com.codehill.carmanagement.dto.FuelStatisticsResponse;
+import com.codehill.carmanagement.exception.CarNotFoundException;
+import com.codehill.carmanagement.exception.ValidationException;
+import com.codehill.carmanagement.model.FuelEntry;
+import com.codehill.carmanagement.service.CarService;
+import com.codehill.carmanagement.service.FuelStatisticsService;
+import com.codehill.carmanagement.util.JsonUtil;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+
+public class FuelServlet extends HttpServlet {
+    
+    private CarService carService;
+    
+    private FuelStatisticsService fuelStatisticsService;
+    
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        this.carService = CarService.getInstance();
+        this.fuelStatisticsService = FuelStatisticsService.getInstance();
+        System.out.println("FuelServlet initialized successfully");
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws IOException {
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        
+        try {
+            String pathInfo = request.getPathInfo();
+            System.out.println("FuelServlet.doPost: pathInfo=" + pathInfo);
+
+            Long carId = extractCarIdFromPath(pathInfo);
+            System.out.println("FuelServlet.doPost: extracted carId=" + carId);
+            
+            FuelEntryRequest fuelRequest = JsonUtil.readRequestBody(request, FuelEntryRequest.class);
+            System.out.println("FuelServlet.doPost: extracted request=" + fuelRequest);
+            
+            FuelEntry createdEntry = carService.addFuelEntry(carId, fuelRequest);
+            System.out.println("FuelServlet.doPost: createdEntry=" + createdEntry);
+            
+            response.setStatus(HttpServletResponse.SC_CREATED);
+            
+            String jsonResponse = JsonUtil.toJson(createdEntry);
+            PrintWriter out = response.getWriter();
+            out.print(jsonResponse);
+            out.flush();
+            
+        } catch (CarNotFoundException e) {
+            System.out.println("FuelServlet.doPost: CarNotFoundException: " + e.getMessage());
+            handleNotFoundError(response, e);
+            
+        } catch (ValidationException e) {
+            System.out.println("FuelServlet.doPost: ValidationException: " + e.getMessage());
+            handleValidationError(response, e);
+            
+        } catch (Exception e) {
+            System.out.println("FuelServlet.doPost: Exception: " + e.getMessage());
+            e.printStackTrace();
+            handleInternalError(response, e);
+        }
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws IOException {
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        
+        try {
+
+            Long carId = extractCarIdFromStatsPath(request.getPathInfo());
+            
+            FuelStatisticsResponse stats = fuelStatisticsService.calculateStatistics(carId);
+            
+            response.setStatus(HttpServletResponse.SC_OK);
+            
+            String jsonResponse = JsonUtil.toJson(stats);
+            PrintWriter out = response.getWriter();
+            out.print(jsonResponse);
+            out.flush();
+            
+        } catch (CarNotFoundException e) {
+            handleNotFoundError(response, e);
+            
+        } catch (ValidationException e) {
+            handleValidationError(response, e);
+            
+        } catch (Exception e) {
+            handleInternalError(response, e);
+        }
+    }
+    
+    private Long extractCarIdFromPath(String pathInfo) {
+        if (pathInfo == null || pathInfo.isEmpty()) {
+            throw new ValidationException("Car ID is required in the URL path");
+        }
+        
+        String[] parts = pathInfo.split("/");
+        
+        if (parts.length < 3 || !"cars".equals(parts[1])) {
+            throw new ValidationException("Invalid URL format. Expected: /fuel/cars/{carId}");
+        }
+        
+        try {
+            Long carId = Long.parseLong(parts[2]);
+            
+            if (carId <= 0) {
+                throw new ValidationException("Car ID must be a positive number");
+            }
+            
+            return carId;
+            
+        } catch (NumberFormatException e) {
+            throw new ValidationException("Car ID must be a valid number");
+        }
+    }
+    
+    private Long extractCarIdFromStatsPath(String pathInfo) {
+        if (pathInfo == null || pathInfo.isEmpty()) {
+            throw new ValidationException("Car ID is required in the URL path");
+        }
+        
+        String[] parts = pathInfo.split("/");
+        
+        if (parts.length < 4 || !"cars".equals(parts[1]) || !"stats".equals(parts[3])) {
+            throw new ValidationException("Invalid URL format. Expected: /fuel/cars/{carId}/stats");
+        }
+        
+        try {
+            Long carId = Long.parseLong(parts[2]);
+            
+            if (carId <= 0) {
+                throw new ValidationException("Car ID must be a positive number");
+            }
+            
+            return carId;
+            
+        } catch (NumberFormatException e) {
+            throw new ValidationException("Car ID must be a valid number");
+        }
+    }
+    
+
+    private void handleNotFoundError(HttpServletResponse response, CarNotFoundException e) 
+            throws IOException {
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        
+        String errorJson = String.format("{\"error\": \"Not found\", \"message\": \"%s\"}", 
+                                        e.getMessage());
+        PrintWriter out = response.getWriter();
+        out.print(errorJson);
+        out.flush();
+    }
+    
+    private void handleValidationError(HttpServletResponse response, ValidationException e) 
+            throws IOException {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        
+        String errorJson = String.format("{\"error\": \"Validation failed\", \"message\": \"%s\"}", 
+                                        e.getMessage());
+        PrintWriter out = response.getWriter();
+        out.print(errorJson);
+        out.flush();
+    }
+    
+    private void handleInternalError(HttpServletResponse response, Exception e) 
+            throws IOException {
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        
+        String errorJson = String.format("{\"error\": \"Internal server error\", \"message\": \"%s\"}", 
+                                        e.getMessage());
+        PrintWriter out = response.getWriter();
+        out.print(errorJson);
+        out.flush();
+        
+        e.printStackTrace();
+    }
+
+    @Override
+    public void destroy() {
+        System.out.println("FuelServlet destroyed");
+        super.destroy();
+    }
+}

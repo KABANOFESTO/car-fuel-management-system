@@ -1,0 +1,2 @@
+127.0.0.1 - - [01/Jan/2026:16:14:12 +0200] "POST /api/cars HTTP/1.1" 201 92 http-bio-8080-exec-1 340
+127.0.0.1 - - [01/Jan/2026:16:19:51 +0200] "POST /api/cars HTTP/1.1" 201 92 http-bio-8080-exec-3 5
