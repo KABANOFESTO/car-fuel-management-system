@@ -2,7 +2,7 @@
 
 Professional Car Management System with pure Java Servlet backend and CLI client.
 
-## 🏗️ Architecture
+## Architecture
 
 ```text
 ┌─────────────────────────────────────────────────────────┐
@@ -38,7 +38,34 @@ Professional Car Management System with pure Java Servlet backend and CLI client
 └─────────────────────────────────────────────────────────┘
 ```
 
-## 🚀 Docker Setup
+## Manual Build (Optional)
+
+**Prerequisites:** Java 17, Maven 3.8+
+
+```bash
+# Build
+mvn clean install
+
+# Run Backend
+cd backend && mvn tomcat7:run
+
+# Run CLI
+cd cli-client
+
+# Run CLI
+java -jar cli-client/target/cli-client-1.0.0.jar help
+
+# Run CLI create-car
+java -jar cli-client/target/cli-client-1.0.0.jar create-car --brand Toyota --model Camry --year 2024
+
+# Run CLI add-fuel
+java -jar cli-client/target/cli-client-1.0.0.jar add-fuel --carId 1 --liters 45 --price 3.50 --odometer 10500
+
+# Run CLI fuel-stats
+java -jar cli-client/target/cli-client-1.0.0.jar fuel-stats --carId 1
+```
+
+## Docker Setup
 
 **Start all services:**
 ```bash
@@ -47,7 +74,7 @@ docker-compose up -d --build
 
 The backend API is now available at `http://localhost:8080`.
 
-## 🖥️ Using the CLI
+## Using the CLI
 
 Run commands directly via the docker container:
 
@@ -71,22 +98,7 @@ docker-compose exec cli java -jar app.jar fuel-stats --carId 1
 docker-compose exec cli java -jar app.jar list-cars
 ```
 
-## 🛑 Stop
+## Stop
 ```bash
 docker-compose down
-```
-
-## 🛠 Manual Build (Optional)
-
-**Prerequisites:** Java 17, Maven 3.8+
-
-```bash
-# Build
-mvn clean install
-
-# Run Backend
-cd backend && mvn tomcat7:run
-
-# Run CLI
-java -jar cli-client/target/cli-client-1.0.0.jar help
 ```
