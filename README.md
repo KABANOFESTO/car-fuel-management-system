@@ -52,17 +52,18 @@ cd backend && mvn tomcat7:run
 # Run CLI
 cd cli-client
 
-# Run CLI
-java -jar cli-client/target/cli-client-1.0.0.jar help
-
 # Run CLI create-car
-java -jar cli-client/target/cli-client-1.0.0.jar create-car --brand Toyota --model Camry --year 2024
+java -jar target/cli-client-1.0.0.jar create-car --brand Toyota --model Corolla --year 2018
 
-# Run CLI add-fuel
-java -jar cli-client/target/cli-client-1.0.0.jar add-fuel --carId 1 --liters 45 --price 3.50 --odometer 10500
+# Add fuel entry
+java -jar target/cli-client-1.0.0.jar add-fuel --carId 1 --liters 40 --price 52.5 --odometer 45000
 
-# Run CLI fuel-stats
-java -jar cli-client/target/cli-client-1.0.0.jar fuel-stats --carId 1
+# Add another fuel entry
+java -jar target/cli-client-1.0.0.jar add-fuel --carId 1 --liters 45 --price 58.0 --odometer 45500
+
+# View statistics
+java -jar target/cli-client-1.0.0.jar fuel-stats --carId 1
+
 ```
 
 ## Docker Setup
